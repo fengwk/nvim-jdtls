@@ -693,7 +693,12 @@ local function find_last(str, pattern)
 end
 
 
+local enable_auto_imports = false
 local function java_choose_imports(resp)
+  if enable_auto_imports then
+    enable_auto_imports = false
+    return {}
+  end
   local uri = resp[1]
   local selections = resp[2]
   local choices = {}
@@ -821,6 +826,13 @@ end
 --- Organize the imports in the current buffer
 function M.organize_imports()
   java_action_organize_imports(nil, { params = make_code_action_params(false) })
+end
+
+
+--- Auto organize the imports in the current buffer
+function M.auto_organize_imports()
+  enable_auto_imports = true
+  M.organize_imports()
 end
 
 
